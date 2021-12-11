@@ -5,7 +5,7 @@ pipeline {
 		
 		// ******ALL CODE TO BE ADDED BELOW THIS COMMENT******
 		
-		//Code starts for stage Clean
+		//Code starts for stage Clean - limpiar archivos de compilaciones anteriores
         stage('Clean') {
             steps {
                 sh 'mvn clean'
@@ -67,7 +67,9 @@ pipeline {
                 sh 'mvn jacoco:report'
             }
         }
-		//Code ends for stage Code Coverage
+		
+		
+		//Code ends for stage Code Coverage - crea un paquete de instalación (un war) desplegable en un servidor web
 
 		
 				//Code starts for stage Install
@@ -79,7 +81,7 @@ pipeline {
 		//Code ends for stage Install
 		
 		
-		//Code starts for stage Launch Tomcat Server
+		//Code starts for stage Launch Tomcat Server - levantamos el Tomcat en el servidor
 		stage('Launch Tomcat Server') {
             steps {
                 sh '/tmp/apache-tomcat-9.0.20/bin/startup.sh'
@@ -88,7 +90,7 @@ pipeline {
 		//Code ends for stage Launch Tomcat Server
 		
 		
-		//Code starts for Deploy War on Tomcat Server
+		//Code starts for Deploy War on Tomcat Server - desplegamos el war en el servidor Tomcat
 		stage('Deploy War on Tomcat Server') {
             steps {
                 sh 'cp /var/jenkins_home/workspace/verity-devops-ex/target/ExpenseApp-1.war /tmp/apache-tomcat-9.0.20/webapps'
@@ -96,7 +98,8 @@ pipeline {
         }
 		//Code ends for stage Deploy War on Tomcat Server
 		
-		//Code starts for stage API Test
+		
+		//Code starts for stage API Test - Ejecutar pruebas de integración API (proyecto EMAPITests-ex.git)
 		stage('API Test') {
             steps {
 				//Change git url below as per your forked github repository URL
@@ -104,10 +107,10 @@ pipeline {
             	sh 'mvn -Dtest=ExpenseManagerAPITest test'
             }
         }
-		//Code ends for stage API Test	
+		//Code ends for stage API Test
 		
 		
-		//Code starts for stage System Test
+		//Code starts for stage System Test - Ejecutar pruebas de Sistema con Selenium (proyecto EMSystemTests-ex.git)
 		stage('System Test') {
             steps {
 				//Change git url below as per your forked github repository URL
